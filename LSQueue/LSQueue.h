@@ -10,6 +10,7 @@
 
 @interface LSQueue<ObjectType> : NSObject
 
+-(nullable id)initWithSize:(NSUInteger)size;
 -(void)enqueueObject:(nonnull ObjectType)anObject;
 -(nullable ObjectType)dequeue;
 -(nullable ObjectType)peek;
