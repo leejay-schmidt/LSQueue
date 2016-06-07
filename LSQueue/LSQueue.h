@@ -8,6 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LSQueue : NSObject
+@interface LSQueue<ObjectType> : NSObject
+
+-(void)enqueueObject:(nonnull ObjectType)anObject;
+-(nullable ObjectType)dequeue;
+-(nullable ObjectType)poll;
+-(nullable ObjectType)dequeueObject:(nonnull ObjectType)anObject;
+-(void)removeObject:(nonnull ObjectType)anObject;
+-(void)removeAllObjects;
+-(BOOL)isEmpty;
+-(BOOL)containsObject:(nonnull ObjectType)anObject;
 
 @end
