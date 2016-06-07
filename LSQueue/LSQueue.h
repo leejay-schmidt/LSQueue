@@ -12,7 +12,7 @@
 
 -(void)enqueueObject:(nonnull ObjectType)anObject;
 -(nullable ObjectType)dequeue;
--(nullable ObjectType)poll;
+-(nullable ObjectType)peek;
 -(nullable ObjectType)dequeueObject:(nonnull ObjectType)anObject;
 -(void)removeObject:(nonnull ObjectType)anObject;
 -(void)removeAllObjects;

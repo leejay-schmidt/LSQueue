@@ -47,14 +47,14 @@
 }
 
 - (id)dequeue {
-    id anObject = [self poll];
+    id anObject = [self peek];
     if (anObject) {
         [self.queue removeLastObject];
     }
     return anObject;
 }
 
-- (id)poll {
+- (id)peek {
     id anObject = nil;
     if ([self.queue count]) {
         anObject = [self.queue lastObject];
