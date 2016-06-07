@@ -87,4 +87,8 @@
     return [self.queue containsObject:anObject];
 }
 
+- (NSUInteger)count {
+    return [self.queue count];
+}
+
 @end

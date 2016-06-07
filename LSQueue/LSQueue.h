@@ -19,5 +19,6 @@
 -(void)removeAllObjects;
 -(BOOL)isEmpty;
 -(BOOL)containsObject:(nonnull ObjectType)anObject;
+-(NSUInteger)count;
 
 @end
