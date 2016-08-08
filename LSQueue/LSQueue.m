@@ -91,4 +91,17 @@
     return [self.queue count];
 }
 
+- (NSNumber *)averageQueue {
+    quad_t currAverage = 0;
+    int count = 0;
+    for (NSObject *obj in self.queue) {
+        if ([obj isKindOfClass:[NSNumber class]]) {
+            currAverage += (quad_t)[(NSNumber *)obj doubleValue];
+            ++count;
+        }
+    }
+    currAverage /= count;
+    return @((double)currAverage);
+}
+
 @end

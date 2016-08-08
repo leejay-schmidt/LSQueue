@@ -10,7 +10,14 @@
 
 @interface LSQueue<ObjectType> : NSObject
 
+/*
+ Creates a new queue with the given capacity/size limit
+ @param size The desired capacity/size limit for the queue
+ @return New LSQueue object
+ */
 -(nullable id)initWithSize:(NSUInteger)size;
+/*
+ */
 -(void)enqueueObject:(nonnull ObjectType)anObject;
 -(nullable ObjectType)dequeue;
 -(nullable ObjectType)peek;
@@ -20,5 +27,6 @@
 -(BOOL)isEmpty;
 -(BOOL)containsObject:(nonnull ObjectType)anObject;
 -(NSUInteger)count;
+-(nonnull NSNumber *)averageQueue;
 
 @end
