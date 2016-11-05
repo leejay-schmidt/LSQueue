@@ -8,7 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, LSQueueEvictPolicy) {
+    LSQueueEvictOldest,
+    LSQueueEvictNewest,
+    LSQueueEvictRejectNew
+};
+
 @interface LSQueue<ObjectType> : NSObject
+
+@property (nonatomic) LSQueueEvictPolicy evictionPolicy;
 
 /*
  Creates a new queue with the given capacity/size limit

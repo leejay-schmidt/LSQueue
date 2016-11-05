@@ -11,7 +11,11 @@
 
 @interface LSQueue ()
 
+// the backing array for the queue
+// needs to be both mutable and private to prevent people
+// from accessing the array directly
 @property (nonatomic) NSMutableArray *queue;
+// the size to ceiling the number of objects in the queue at any moment
 @property (nonatomic) NSUInteger size;
 
 @end
@@ -26,7 +30,10 @@
     if (self) {
         // need to initialize both the backing array and the size value
         self.queue = [[NSMutableArray alloc] init];
+        // assume no ceiling on capacity
         self.size = (NSUInteger)INT_MAX;
+        // default eviction policy to oldest object being dumped
+        self.evictionPolicy = LSQueueEvictOldest;
     }
     return self;
 }
@@ -36,41 +43,72 @@
     if (self) {
         //use initWithCapacity to maximize efficiency
         self.queue = [[NSMutableArray alloc] initWithCapacity:size];
+        // set ceiling on size
+        // this will be used to automatically determine when to dump
+        // the oldest items in the queue
         self.size = size;
+        // default eviction policy to oldest
+        self.evictionPolicy = LSQueueEvictOldest;
     }
     return self;
 }
 
 #pragma mark - Standard queue operations
 - (void)enqueueObject:(id)anObject {
+    BOOL rejectNew = NO;
+    // first ensure that queue is not going to be over capacity
     if ([self.queue count] == self.size) {
-        [self.queue removeLastObject];
+        if (self.evictionPolicy == LSQueueEvictOldest) {
+            // if it is going to be overcapacity, dump the oldest one
+            [self.queue removeLastObject];
+        } else if (self.evictionPolicy == LSQueueEvictNewest) {
+            // if it is going to be overcapacity, dump the newest one
+            [self.queue removeObjectAtIndex:0];
+        } else if (self.evictionPolicy == LSQueueEvictRejectNew) {
+            rejectNew = YES;
+        }
     }
-    [self.queue insertObject:anObject atIndex:0];
+    if (!rejectNew) {
+        // queue up new item as the first object to follow FIFO structure
+        [self.queue insertObject:anObject atIndex:0];
+    }
 }
 
 - (id)dequeue {
+    // grab the oldest (last) object using PEEK
     id anObject = [self peek];
+    // if there is an object, then remove the object
     if (anObject) {
         [self.queue removeLastObject];
     }
+    // return the dequeued object
     return anObject;
 }
 
 - (id)peek {
+    // assume that the object is null
     id anObject = nil;
+    // if there are objects in the queue, grab the last one
     if ([self.queue count]) {
         anObject = [self.queue lastObject];
     }
+    // return that object
+    // since this is just peek, it will not remove the object
+    // from the queue
     return anObject;
 }
 
 - (id)dequeueObject:(id)anObject {
+    // assume that there's no object to return
     id returnObject = nil;
+    // check if the queue actually contains the desired object
     if ([self.queue containsObject:anObject]) {
+        // if the object is in the queue, then grab it
         returnObject = anObject;
+        // remove the object from the queue, per the dequeue contract
         [self.queue removeObject:anObject];
     }
+    // return the object, if it was found, or nil otherwise
     return returnObject;
 }
 
