@@ -26,8 +26,7 @@
 - (id)init {
     // note: this is just a mapping of the backing array's
     // method to the queue's operation
-    self = [super init];
-    if (self) {
+    if (self = [super init]) {
         // need to initialize both the backing array and the size value
         self.queue = [[NSMutableArray alloc] init];
         // assume no ceiling on capacity
@@ -39,8 +38,7 @@
 }
 
 - (id)initWithSize:(NSUInteger)size {
-    self = [super init];
-    if (self) {
+    if (self = [super init]) {
         //use initWithCapacity to maximize efficiency
         self.queue = [[NSMutableArray alloc] initWithCapacity:size];
         // set ceiling on size
